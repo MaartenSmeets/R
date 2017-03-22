@@ -32,9 +32,9 @@ print(model)
 ```
 
 ```{r}
-response <- predict(model, iris[idx_test, feature_columns])
+response <- predict(model, iris[tf_test, feature_columns])
 
-correct <- response == iris[idx_test, ncol(iris)]
+correct <- response == iris[tf_test, ncol(iris)]
 
 sum(correct) / length(correct)
 ```
