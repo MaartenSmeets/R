@@ -1,0 +1,31 @@
+---
+title: "tutorial_iris"
+author: "R.W.W. Brouwer"
+date: "22 maart 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(randomForest)
+library(knitr)
+library(ggplot2)
+```
+
+```{r, results='asis'}
+kable(iris)
+```
+
+
+```{r}
+library(help = "randomForest")
+
+idx_train <- sample(1:nrow(iris), 15) 
+idx_test <- !1:nrow(iris) %in% idx_train
+
+model <- randomForest(iris[idx_train, 1:(ncol(iris)-1)], y = iris[idx_train, ncol(iris)])
+print(model)
+```
