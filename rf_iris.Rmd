@@ -16,16 +16,38 @@ library(ggplot2)
 ```
 
 ```{r, results='asis'}
-kable(iris)
+kable(head(iris))
 ```
 
 
 ```{r}
-library(help = "randomForest")
+# library(help = "randomForest")
 
-idx_train <- sample(1:nrow(iris), 15) 
-idx_test <- !1:nrow(iris) %in% idx_train
+idx_train <- sample(1:nrow(iris), 15, replace = FALSE)
+tf_test <- !1:nrow(iris) %in% idx_train
 
-model <- randomForest(iris[idx_train, 1:(ncol(iris)-1)], y = iris[idx_train, ncol(iris)])
+feature_columns <- 1:(ncol(iris)-1)
+model <- randomForest(iris[idx_train, feature_columns], y = iris[idx_train, ncol(iris)])
 print(model)
+```
+
+```{r}
+response <- predict(model, iris[idx_test, feature_columns])
+
+correct <- response == iris[idx_test, ncol(iris)]
+
+sum(correct) / length(correct)
+```
+
+
+Intermezzo TRUE/FALSE vectors
+
+```{r}
+tf_sepal <- with(iris, Sepal.Length > 4.5)
+
+sum(tf_test)
+sum(tf_sepal)
+tf <- tf_test & tf_sepal
+sum(tf)
+
 ```
