@@ -22,7 +22,7 @@ kable(head(iris))
 
 ```{r}
 # library(help = "randomForest")
-
+set.seed(10)
 idx_train <- sample(1:nrow(iris), 15, replace = FALSE)
 tf_test <- !1:nrow(iris) %in% idx_train
 
