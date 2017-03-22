@@ -23,11 +23,11 @@ kable(head(iris))
 ```{r}
 # library(help = "randomForest")
 set.seed(10)
-idx_train <- sample(1:nrow(iris), 15, replace = FALSE)
+idx_train <- sample(1:nrow(iris), 45, replace = FALSE)
 tf_test <- !1:nrow(iris) %in% idx_train
 
 feature_columns <- 1:(ncol(iris)-1)
-model <- randomForest(iris[idx_train, feature_columns], y = iris[idx_train, ncol(iris)])
+model <- randomForest(iris[idx_train, feature_columns], y = iris[idx_train, ncol(iris)], importance = TRUE, ntree = 1000)
 print(model)
 ```
 
@@ -39,6 +39,9 @@ correct <- response == iris[tf_test, ncol(iris)]
 sum(correct) / length(correct)
 ```
 
+```{r}
+varImpPlot(model)
+```
 
 Intermezzo TRUE/FALSE vectors
 
