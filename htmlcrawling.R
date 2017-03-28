@@ -39,16 +39,16 @@ sectorurls <- mypage[[4]]$V1
 sectorurls <- paste0(baseurl,sectorurls) 
 
 #fetch all data (raw)
-sectorpages <- lapply(sectorurls,htmlParseFunc)
+sectorpages <- parLapply(cl,sectorurls,htmlParseFunc)
 
 #list of list of data.frame (parsed data)
-sectorpagedata <- lapply(sectorpages,readHTMLTable,elFun = hrefFun,stringsAsFactors = FALSE)
+sectorpagedata <- parLapply(cl,sectorpages,readHTMLTable,elFun = hrefFun,stringsAsFactors = FALSE)
 
 #list of data.frame
-industryurls <- lapply(sectorpagedata, function (x) x[[4]]$V1)
+industryurls <- parLapply(cl,sectorpagedata, function (x) x[[4]]$V1)
 
 #remove first 3 rows -> no relevant data there
-industryurls <- lapply(industryurls,function(x) tail(x,length(x)-3))
+industryurls <- parLapply(cl,industryurls,function(x) tail(x,length(x)-3))
 
 #create one big list
 industryurls <- unlist(industryurls)
@@ -59,8 +59,10 @@ industryurls <- paste0(baseurl,industryurls)
 #fetch all data (raw)
 industrypages <- parLapply(cl,industryurls,htmlParseFunc)
 
+#parse data
+industrypagedata <- parLapply(industrypages,readHTMLTable,elFun = hrefFun,stringsAsFactors = FALSE)
+
 stopCluster(cl)
 
-#parse data
-industrypagedata <- lapply(industrypages,readHTMLTable,elFun = hrefFun,stringsAsFactors = FALSE)
+industrypagedata
 
