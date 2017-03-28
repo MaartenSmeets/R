@@ -1,6 +1,10 @@
-# Calculate the number of cores
+library(parallel)
+library(XML)
+library(RCurl)
+
 no_cores <- detectCores() - 1
 
+# Calculate the number of cores
 cl <- makeCluster(no_cores)
 
 clusterEvalQ(cl, {
