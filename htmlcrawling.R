@@ -7,6 +7,7 @@ no_cores <- detectCores() - 1
 # Calculate the number of cores
 cl <- makeCluster(no_cores)
 
+#make libraries available in other nodes
 clusterEvalQ(cl, {
   library(XML)
   library(RCurl)
@@ -31,13 +32,14 @@ htmlParseFunc <- function(x) {
   return (rawToChar(htmlAsc))
 }
 
+#make functions available in other nodes
 clusterExport(cl, "htmlParseFunc")
 clusterExport(cl, "hrefFun")
 
 mypage <- readHTMLTable(htmlParseFunc(baseurl), elFun = hrefFun,stringsAsFactors = FALSE)
 
-#grab 4th table
-sectorurls <- mypage[[4]]$V1
+#grab 5th table
+sectorurls <- mypage[[5]]$`SectorÂ `
 
 #prepend baseurl
 sectorurls <- paste0(baseurl,sectorurls) 
@@ -64,9 +66,20 @@ industryurls <- paste0(baseurl,industryurls)
 industrypages <- parLapply(cl,industryurls,htmlParseFunc)
 
 #parse data
-industrypagedata <- parLapply(industrypages,readHTMLTable,elFun = hrefFun,stringsAsFactors = FALSE)
+industrypagedata <- parLapply(cl,industrypages,readHTMLTable,stringsAsFactors = FALSE)
 
+#first 4 entries don't matter
+industrypagedata <- parLapply(cl,industrypagedata,function(x) tail(x[[4]][[1]],length(x[[4]][[1]])-4))
+
+#make one big list
+industrypagedata <- unlist(industrypagedata2)
+
+#remove companies string. some tables had them as 5th entry and some didn't
+industrypagedata <- industrypagedata2[industrypagedata2 != "Companies"]
+
+stocks <- sub("\\).*", "", sub(".*\\(", "", industrypagedata)) 
+
+stocks
+
+#and we're done!
 stopCluster(cl)
-
-industrypagedata
-
