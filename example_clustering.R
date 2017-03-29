@@ -5,10 +5,12 @@ library(ggplot2)
 
 d <- rbind(
     data.frame(
+        "i" = 1:100,
         "x" = rnorm(100, 2, 1),
         "y" = rnorm(100, 2, 1),
         "pop" = "A"),
     data.frame(
+        "i" = 1:100,
         "x" = rnorm(100, 6, 1),
         "y" = rnorm(100, 6, 1),
         "pop" = "B"))
@@ -21,9 +23,10 @@ ggplot(d) +
 #'
 library(randomForest)
 
-model <- randomForest(d[,1:2], y = d$pop)
+model <- randomForest(d[,1:3], y = d$pop)
 
-test <- data.frame(
+tst <- data.frame(
+        "i" = 1:100,
         "x" = rnorm(100, 2, 1),
         "y" = rnorm(100, 2, 1))
 
