@@ -16,3 +16,21 @@ d <- rbind(
 ggplot(d) +
     geom_point(aes(x = x, y = y, colour = pop)) +
     theme(aspect.ratio = 1)
+
+#'
+#'
+library(randomForest)
+
+model <- randomForest(d[,1:2], y = d$pop)
+
+tst <- data.frame(
+        "x" = rnorm(100, 2, 1),
+        "y" = rnorm(100, 2, 1))
+
+rsp <- predict(model, tst)
+
+x <- tst
+x$pop <- rsp
+ggplot(x) +
+    geom_point(aes(x = x, y = y, colour = pop)) +
+    theme(aspect.ratio = 1)
