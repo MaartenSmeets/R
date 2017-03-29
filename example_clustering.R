@@ -24,13 +24,16 @@ ggplot(d) +
 library(randomForest)
 
 model <- randomForest(d[,1:3], y = d$pop)
+modelb <- randomForest(d[,1:3])
 
 tst <- data.frame(
         "i" = 1:100,
         "x" = rnorm(100, 2, 1),
         "y" = rnorm(100, 2, 1))
 
-rsp <- predict(model, test)
+rsp <- predict(model, tst)
+
+rsp <- predict(modelb, tst)
 
 x <- tst
 x$pop <- rsp
@@ -42,3 +45,10 @@ ggplot(rbind(x, y)) +
     geom_point(aes(x = x, y = y, colour = pop)) +
     facet_wrap(~ type) +
     theme(aspect.ratio = 1)
+
+# Hierarchicalclustering
+#
+dst <- dist(d[,2:3])
+hcl <- hclust(dst)
+rsp <- cutree(hcl, k = 2)
+
