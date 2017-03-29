@@ -1,9 +1,5 @@
 #!/bin/env Rscript
 
-library(randomForest)
-
-install.packages("neuralnet")
-
 
 library(ggplot2)
 
