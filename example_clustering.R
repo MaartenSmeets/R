@@ -31,6 +31,12 @@ rsp <- predict(model, tst)
 
 x <- tst
 x$pop <- rsp
-ggplot(x) +
+x$type <- "predicted"
+y <- d
+y$type <- "original"
+
+
+ggplot(rbind(x, y)) +
     geom_point(aes(x = x, y = y, colour = pop)) +
+    facet_wrap(~ type) +
     theme(aspect.ratio = 1)
