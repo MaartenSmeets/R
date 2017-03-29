@@ -19,6 +19,13 @@ ggplot(d) +
     geom_point(aes(x = x, y = y, colour = pop)) +
     theme(aspect.ratio = 1)
 
+# contour plot
+ggplot(d) +
+    stat_density2d(aes(x = x, y = y)) +
+    theme(aspect.ratio = 1)
+
+
+
 #'
 #'
 library(randomForest)
