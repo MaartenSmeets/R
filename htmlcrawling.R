@@ -72,10 +72,10 @@ industrypagedata <- parLapply(cl,industrypages,readHTMLTable,stringsAsFactors = 
 industrypagedata <- parLapply(cl,industrypagedata,function(x) tail(x[[4]][[1]],length(x[[4]][[1]])-4))
 
 #make one big list
-industrypagedata <- unlist(industrypagedata2)
+industrypagedata <- unlist(industrypagedata)
 
 #remove companies string. some tables had them as 5th entry and some didn't
-industrypagedata <- industrypagedata2[industrypagedata2 != "Companies"]
+industrypagedata <- industrypagedata[industrypagedata != "Companies"]
 
 stocks <- sub("\\).*", "", sub(".*\\(", "", industrypagedata)) 
 
