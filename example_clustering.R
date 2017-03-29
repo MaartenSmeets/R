@@ -9,8 +9,8 @@ d <- rbind(
         "y" = rnorm(100, 2, 1),
         "pop" = "A"),
     data.frame(
-        "x" = rnorm(100, 4, 1),
-        "y" = rnorm(100, 4, 1),
+        "x" = rnorm(100, 6, 1),
+        "y" = rnorm(100, 6, 1),
         "pop" = "B"))
 
 ggplot(d) +
@@ -23,18 +23,17 @@ library(randomForest)
 
 model <- randomForest(d[,1:2], y = d$pop)
 
-tst <- data.frame(
+test <- data.frame(
         "x" = rnorm(100, 2, 1),
         "y" = rnorm(100, 2, 1))
 
-rsp <- predict(model, tst)
+rsp <- predict(model, test)
 
 x <- tst
 x$pop <- rsp
 x$type <- "predicted"
 y <- d
 y$type <- "original"
-
 
 ggplot(rbind(x, y)) +
     geom_point(aes(x = x, y = y, colour = pop)) +
