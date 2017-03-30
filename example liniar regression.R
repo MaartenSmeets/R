@@ -1,5 +1,5 @@
 library(ggplot2)
-require(plyr)
+library(plyr)
 
 alligator = data.frame(
   lnLength = c(3.87, 3.61, 4.33, 3.43, 3.81, 3.83, 3.46, 3.76,
@@ -7,6 +7,10 @@ alligator = data.frame(
   lnWeight = c(4.87, 3.93, 6.46, 3.33, 4.38, 4.70, 3.50, 4.50,
                3.58, 3.64, 5.90, 4.43, 4.38, 4.42, 4.25)
 )
+
+alli.mod1 = lm(lnWeight ~ lnLength, data = alligator)
+
+alli.mod1$model
 
 ggplotRegression <- function (fit) {
   ggplot(fit$model, aes_string(x = names(fit$model)[2], y = names(fit$model)[1])) + 
@@ -18,6 +22,5 @@ ggplotRegression <- function (fit) {
                        " P =",signif(summary(fit)$coef[2,4], 5)))
 }
 
-alli.mod1 = lm(lnWeight ~ lnLength, data = alligator)
 ggplotRegression(alli.mod1)
 
